@@ -30,8 +30,8 @@ urlpatterns = [
     # Admin:
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', include(admin.site.urls)),
-    path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
-    path('sitemap.xml', TemplateView.as_view(template_name='sitemap.xml', content_type='text/plain')),
+    path('robots.txt', TemplateView.as_view(template_name='robots.txt')),
+    path('sitemap.xml', TemplateView.as_view(template_name='sitemap.xml')),
     path('google7467b69f25fa8f1e.html', TemplateView.as_view(template_name='google7467b69f25fa8f1e.html')),
   
     # API URLs
@@ -49,7 +49,7 @@ urlpatterns = [
     # url(r'help/', include('helpdesk.urls')),
 
     # Index
-    path('', vacancy_views.search_vacancies, {'template_name': 'index.html'}, name='TRM-index'),
+    path('', vacancy_views.search_vacancies, name='TRM-index'),
     # url(r'^pricing/$', TRM_views.pricing_comparison, name = 'pricing_comparison'),
     path('aboutus/', TRM_views.about_us, name="about_us"),
     path('product/', TRM_views.product, name="product"),
@@ -85,37 +85,18 @@ urlpatterns = [
     
     # Common - Django Contrib Auth
     # url(r'^', include('common.common_auth_urls')),
-    path('login/', django_auth_views.login, {'template_name': 'login.html', 'extra_context': {'static_header': True}}, name='auth_login'),
-    path('logout/', django_auth_views.logout, {'next_page': '/'}, name='auth_logout'),
+    path('login/', django_auth_views.login, name='auth_login'),
+    path('logout/', django_auth_views.logout, name='auth_logout'),
     path('password/change/', django_auth_views.password_change,
-        {'post_change_redirect': 'common_password_change_done',
-         'template_name': 'password_change.html',
-         'password_change_form': ChangePasswordForm},
         name='auth_password_change'),
     path('password/reset/', django_auth_views.password_reset,
-        {'password_reset_form': CustomPasswordResetForm,
-         'template_name': 'new_password_reset.html',
-         'email_template_name': 'mails/password_reset_email.html',
-         'subject_template_name': 'mails/password_reset_subject.html', 
-         'extra_context': {'static_header': True}},
         name='auth_password_reset'),
     re_path(r'^password/reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
         django_auth_views.password_reset_confirm,
-        {'template_name': 'new_password_reset_confirm.html',
-         'post_reset_redirect': 'custom_password_reset_complete',
-         'extra_context': {'static_header': True}},
         name='auth_password_reset_confirm'),
     path('password/reset/done/', django_auth_views.password_reset_done,
-        {'template_name': 'new_password_reset_done.html',
-         'extra_context': {'static_header': True}},
         name='password_reset_done'),
     path('username/recover/', django_auth_views.password_reset,
-        {'password_reset_form': RecoverUserForm,
-         'template_name': 'new_recover_user.html',
-         'email_template_name': 'mails/recover_user_email.html',
-         'subject_template_name': 'mails/recover_user_subject.html',
-         'post_reset_redirect': 'common_recover_user_requested',
-         'extra_context': {'static_header': True}},
         name='recover_user'),
 
     # Common - common.views.py
@@ -124,7 +105,7 @@ urlpatterns = [
     re_path(r'^login/social/(?P<social_code>\w+)/(?P<vacancy_id>\d+)/(?P<recruiter_id>\d+)/$', common_views.social_login, name="social_login"),
     # url(r'^login/social/(?P<social_code>\w+)/(?P<vacancy_id>\d+)/(?P<redirect_type>\d+)/$', common_views.social_login, name="social_login"),
     path('redirect/', common_views.redirect_after_login, name='common_redirect_after_login'),
-    path('signup/complete/', common_views.registration_complete, {'template_name': 'new_registration_messages.html'}, name='common_registration_complete'),
+    path('signup/complete/', common_views.registration_complete, name='common_registration_complete'),
     path('email/change/', common_views.email_change, name='common_email_change'),
     path('email/changerequested/', common_views.email_change_requested, name='common_email_change_requested'),
     re_path(r'^email/verify/(?P<token>[0-9A-Za-z-]+)/(?P<code>[0-9A-Za-z-]+)/$', common_views.email_change_approve,
